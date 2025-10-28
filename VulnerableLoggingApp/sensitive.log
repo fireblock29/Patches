@@ -1,0 +1,55 @@
+2025-10-28 08:31:23,682 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:31:24,145 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:31:51,231 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:32:03,344 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:32:15,546 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:32:43,327 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:33:08,946 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:33:09,361 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:34:24,697 - CRITICAL - CREDENTIALS - User: admin, Pass: admin123, IP: 127.0.0.1
+2025-10-28 08:34:24,697 - INFO - Session created - User: admin, Email: admin@example.com
+2025-10-28 08:35:41,966 - CRITICAL - CREDENTIALS - User: user1, Pass: password123, IP: 127.0.0.1
+2025-10-28 08:35:41,966 - INFO - Session created - User: user1, Email: user1@example.com
+2025-10-28 08:44:20,596 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:44:26,391 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:45:15,926 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:45:16,351 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:57:31,188 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 08:57:31,580 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:04:42,724 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:04:43,118 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:05:32,524 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:05:52,446 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:05:59,250 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:05:59,655 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:15:55,082 - CRITICAL - CREDENTIALS - User: admin, Pass: admin123, IP: 127.0.0.1
+2025-10-28 09:15:55,082 - INFO - Session created - User: admin, Email: admin@example.com
+2025-10-28 09:24:23,428 - CRITICAL - CREDENTIALS - User: john.doe, Pass: MyS3cr3tP@ss, IP: 127.0.0.1
+2025-10-28 09:24:23,429 - INFO - Session created - User: john.doe, Email: john.doe@company.com
+2025-10-28 09:26:07,346 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:26:29,235 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:26:39,315 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:26:41,534 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:26:53,292 - CRITICAL - CREDENTIALS - User: john.doe, Pass: MyS3cr3tP@ss, IP: 127.0.0.1
+2025-10-28 09:26:53,293 - INFO - Session created - User: john.doe, Email: john.doe@company.com
+2025-10-28 09:31:29,347 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:31:29,765 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:31:33,801 - CRITICAL - CREDENTIALS - User: john.doe, Pass: MyS3cr3tP@ss, IP: 127.0.0.1
+2025-10-28 09:31:33,802 - INFO - Session created - User: john.doe, Email: john.doe@company.com
+2025-10-28 09:32:16,289 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:32:18,487 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:32:54,783 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:32:55,202 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:33:02,041 - CRITICAL - CREDENTIALS - User: john.doe, Pass: MyS3cr3tP@ss, IP: 127.0.0.1
+2025-10-28 09:33:02,042 - INFO - Session created - User: john.doe, Email: john.doe@company.com
+2025-10-28 09:33:37,162 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:33:37,583 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 09:33:43,875 - CRITICAL - CREDENTIALS - User: john.doe, Pass: MyS3cr3tP@ss, IP: 127.0.0.1
+2025-10-28 09:33:43,875 - INFO - Session created - User: john.doe, Email: john.doe@company.com
+2025-10-28 09:33:55,269 - CRITICAL - CREDENTIALS - User: admin, Pass: admin123, IP: 127.0.0.1
+2025-10-28 09:33:55,270 - INFO - Session created - User: admin, Email: admin@example.com
+2025-10-28 09:59:21,976 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 10:14:08,922 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 10:14:09,337 - CRITICAL - SYSTEM STARTUP - Admin credentials: admin/admin123
+2025-10-28 10:14:24,406 - CRITICAL - CREDENTIALS - User: alice, Pass: alice2024!, IP: 127.0.0.1
+2025-10-28 10:14:24,406 - INFO - Session created - User: alice, Email: alice@example.com

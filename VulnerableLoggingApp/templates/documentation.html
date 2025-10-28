@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - A09:2021 Security Logging and Monitoring Failures</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>🔓 Vulnerable Logging App</h1>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/login">Connexion</a></li>
+                <li><a href="/logs" class="danger">📋 Voir les Logs</a></li>
+                <li><a href="/documentation" class="active">📚 Documentation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-header">
+            <h1>📚 A09:2021 – Security Logging and Monitoring Failures</h1>
+            <p class="subtitle">Guide Pédagogique Complet</p>
+        </div>
+
+        <div class="toc">
+            <h3>📑 Table des Matières</h3>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#vulnerabilities">Vulnérabilités Démontrées</a></li>
+                <li><a href="#exploitation">Scénarios d'Exploitation</a></li>
+                <li><a href="#impact">Impact et Risques</a></li>
+                <li><a href="#prevention">Mesures de Prévention</a></li>
+                <li><a href="#best-practices">Bonnes Pratiques</a></li>
+                <li><a href="#examples">Exemples de Code</a></li>
+                <li><a href="#resources">Ressources Supplémentaires</a></li>
+            </ul>
+        </div>
+
+        <section id="introduction" class="doc-section">
+            <h2>🎯 Introduction</h2>
+            <div class="card">
+                <p><strong>A09:2021 – Security Logging and Monitoring Failures</strong> fait partie du Top 10 OWASP 2021.</p>
+                <p>Cette vulnérabilité survient lorsque:</p>
+                <ul>
+                    <li>Les événements de sécurité ne sont pas loggés correctement</li>
+                    <li>Les logs contiennent des données sensibles</li>
+                    <li>Les logs sont accessibles sans authentification</li>
+                    <li>Il n'y a pas de monitoring actif des événements de sécurité</li>
+                    <li>Les alertes ne sont pas déclenchées lors d'activités suspectes</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="vulnerabilities" class="doc-section">
+            <h2>🔓 Vulnérabilités Démontrées dans cette Application</h2>
+            
+            <div class="vulnerability-card critical">
+                <h3>1. 🔥 Exposition Publique des Logs</h3>
+                <p><strong>Criticité: CRITIQUE</strong></p>
+                <p><strong>Description:</strong> Les fichiers de logs sont accessibles via une URL publique sans aucune authentification.</p>
+                <p><strong>Localisation:</strong> <code>/logs</code>, <code>/api/logs</code>, <code>/api/download-logs</code></p>
+                <p><strong>Impact:</strong> N'importe qui peut lire tous les logs de l'application.</p>
+                <div class="code-example">
+                    <pre>
+# Exploitation:
+curl http://localhost:5000/api/logs?type=sensitive&lines=1000
+curl http://localhost:5000/api/download-logs?type=sensitive -o logs.txt
+                    </pre>
+                </div>
+            </div>
+
+            <div class="vulnerability-card critical">
+                <h3>2. 🔑 Mots de Passe en Clair dans les Logs</h3>
+                <p><strong>Criticité: CRITIQUE</strong></p>
+                <p><strong>Description:</strong> Les mots de passe sont loggés en clair lors des tentatives de connexion.</p>
+                <p><strong>Code vulnérable:</strong></p>
+                <div class="code-example">
+                    <pre>
+# Dans app.py (ligne ~75)
+app.logger.warning(f"Login attempt - Username: {username}, Password: {password}")
+sensitive_logger.critical(f"CREDENTIALS - User: {username}, Pass: {password}")
+                    </pre>
+                </div>
+                <p><strong>Impact:</strong> Tous les mots de passe peuvent être récupérés par un attaquant.</p>
+            </div>
+
+            <div class="vulnerability-card high">
+                <h3>3. 💳 Données Financières Loggées</h3>
+                <p><strong>Criticité: HAUTE</strong></p>
+                <p><strong>Description:</strong> Les transactions financières complètes sont loggées avec tous les détails.</p>
+                <p><strong>Code vulnérable:</strong></p>
+                <div class="code-example">
+                    <pre>
+# Dans app.py (ligne ~110)
+sensitive_logger.critical(
+    f"FINANCIAL TRANSACTION - From: {from_account}, To: {to_account}, "
+    f"Amount: ${amount}, IP: {request.remote_addr}"
+)
+                    </pre>
+                </div>
+                <p><strong>Impact:</strong> Exposition de toutes les transactions financières.</p>
+            </div>
+
+            <div class="vulnerability-card high">
+                <h3>4. 👤 Données Personnelles (PII) Loggées</h3>
+                <p><strong>Criticité: HAUTE</strong></p>
+                <p><strong>Description:</strong> Les données personnelles identifiables sont loggées sans masquage.</p>
+                <p><strong>Données exposées:</strong></p>
+                <ul>
+                    <li>Emails</li>
+                    <li>Numéros de téléphone</li>
+                    <li>Numéros de sécurité sociale</li>
+                    <li>Adresses postales</li>
+                </ul>
+            </div>
+
+            <div class="vulnerability-card medium">
+                <h3>5. 🔍 Recherche dans les Logs Sans Authentification</h3>
+                <p><strong>Criticité: MOYENNE</strong></p>
+                <p><strong>Description:</strong> Une API de recherche permet de fouiller dans les logs.</p>
+                <p><strong>Localisation:</strong> <code>/api/search-logs</code></p>
+                <div class="code-example">
+                    <pre>
+# Exploitation:
+curl "http://localhost:5000/api/search-logs?q=password&type=sensitive"
+                    </pre>
+                </div>
+            </div>
+
+            <div class="vulnerability-card medium">
+                <h3>6. 🗺️ Révélation de la Structure Interne</h3>
+                <p><strong>Criticité: MOYENNE</strong></p>
+                <p><strong>Description:</strong> Les logs révèlent la structure interne de l'application, les routes, les paramètres, etc.</p>
+                <p><strong>Impact:</strong> Facilite la découverte d'autres vulnérabilités.</p>
+            </div>
+        </section>
+
+        <section id="exploitation" class="doc-section">
+            <h2>⚔️ Scénarios d'Exploitation</h2>
+            
+            <div class="card">
+                <h3>Scénario 1: Vol de Credentials</h3>
+                <ol>
+                    <li>L'attaquant découvre l'URL <code>/logs</code></li>
+                    <li>Il accède aux logs sans authentification</li>
+                    <li>Il recherche "password" ou "CREDENTIALS"</li>
+                    <li>Il récupère tous les mots de passe en clair</li>
+                    <li>Il peut maintenant se connecter avec n'importe quel compte</li>
+                </ol>
+                <div class="code-example">
+                    <pre>
+# Commandes d'exploitation:
+curl http://localhost:5000/api/search-logs?q=CREDENTIALS&type=sensitive
+# Résultat: Tous les mots de passe en clair!
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Scénario 2: Espionnage Financier</h3>
+                <ol>
+                    <li>L'attaquant accède aux logs sensibles</li>
+                    <li>Il recherche "FINANCIAL TRANSACTION"</li>
+                    <li>Il obtient la liste complète de toutes les transactions</li>
+                    <li>Il peut identifier les comptes riches</li>
+                    <li>Il peut cibler des attaques spécifiques</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h3>Scénario 3: Vol de Données Personnelles</h3>
+                <ol>
+                    <li>L'attaquant télécharge tous les logs</li>
+                    <li>Il extrait toutes les données personnelles (PII)</li>
+                    <li>Il peut utiliser ces données pour du phishing</li>
+                    <li>Il peut vendre ces données sur le dark web</li>
+                    <li>Violation du RGPD et autres réglementations</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="impact" class="doc-section">
+            <h2>💥 Impact et Risques</h2>
+            
+            <div class="grid">
+                <div class="impact-card critical">
+                    <h3>🔴 Impact Critique</h3>
+                    <ul>
+                        <li>Compromission totale des comptes utilisateurs</li>
+                        <li>Vol de données financières</li>
+                        <li>Violation massive de données personnelles</li>
+                        <li>Non-conformité RGPD (amendes jusqu'à 4% du CA)</li>
+                    </ul>
+                </div>
+
+                <div class="impact-card high">
+                    <h3>🟠 Impact Élevé</h3>
+                    <ul>
+                        <li>Perte de confiance des clients</li>
+                        <li>Dommages réputationnels</li>
+                        <li>Poursuites judiciaires</li>
+                        <li>Coûts de remédiation élevés</li>
+                    </ul>
+                </div>
+
+                <div class="impact-card medium">
+                    <h3>🟡 Impact Moyen</h3>
+                    <ul>
+                        <li>Facilite d'autres attaques</li>
+                        <li>Révélation de la structure interne</li>
+                        <li>Identification des utilisateurs actifs</li>
+                        <li>Cartographie du système</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="doc-section">
+            <h2>🛡️ Mesures de Prévention</h2>
+            
+            <div class="card">
+                <h3>1. ✅ Ne JAMAIS Logger de Données Sensibles</h3>
+                <div class="comparison">
+                    <div class="bad">
+                        <h4>❌ Mauvais:</h4>
+                        <pre>
+logger.info(f"Login: {username}, Password: {password}")
+logger.info(f"Credit card: {card_number}")
+                        </pre>
+                    </div>
+                    <div class="good">
+                        <h4>✅ Bon:</h4>
+                        <pre>
+logger.info(f"Login attempt for user: {username}")
+logger.info(f"Payment processed for card ending in: {card_number[-4:]}")
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>2. 🔐 Protéger l'Accès aux Logs</h3>
+                <ul>
+                    <li>Authentification forte requise (MFA recommandé)</li>
+                    <li>Contrôle d'accès basé sur les rôles (RBAC)</li>
+                    <li>Logs stockés hors du webroot</li>
+                    <li>Permissions système restrictives (chmod 600)</li>
+                    <li>Logs accessibles uniquement via SSH/VPN</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>3. 🎭 Masquer les Données Sensibles</h3>
+                <div class="code-example">
+                    <pre>
+def mask_sensitive_data(data, visible_chars=4):
+    """Masque les données sensibles"""
+    if len(data) <= visible_chars:
+        return '*' * len(data)
+    return '*' * (len(data) - visible_chars) + data[-visible_chars:]
+
+# Utilisation:
+logger.info(f"Card: {mask_sensitive_data(card_number)}")
+# Résultat: Card: ************1234
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>4. 🔄 Rotation et Archivage des Logs</h3>
+                <ul>
+                    <li>Rotation automatique des logs (taille/date)</li>
+                    <li>Archivage sécurisé des anciens logs</li>
+                    <li>Chiffrement des logs archivés</li>
+                    <li>Politique de rétention claire</li>
+                    <li>Suppression sécurisée après la période de rétention</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>5. 📊 Monitoring et Alertes</h3>
+                <ul>
+                    <li>Monitoring en temps réel des événements de sécurité</li>
+                    <li>Alertes automatiques sur activités suspectes</li>
+                    <li>Détection d'anomalies (tentatives de connexion multiples, etc.)</li>
+                    <li>Intégration avec un SIEM (Security Information and Event Management)</li>
+                    <li>Tableaux de bord de sécurité</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="best-practices" class="doc-section">
+            <h2>✨ Bonnes Pratiques</h2>
+            
+            <div class="best-practices-grid">
+                <div class="practice-card">
+                    <h3>📝 Que Logger?</h3>
+                    <ul>
+                        <li>✅ Tentatives de connexion (succès/échec)</li>
+                        <li>✅ Changements de permissions</li>
+                        <li>✅ Accès aux ressources sensibles</li>
+                        <li>✅ Erreurs et exceptions</li>
+                        <li>✅ Modifications de configuration</li>
+                        <li>❌ Mots de passe</li>
+                        <li>❌ Tokens d'authentification</li>
+                        <li>❌ Données personnelles complètes</li>
+                        <li>❌ Données financières complètes</li>
+                    </ul>
+                </div>
+
+                <div class="practice-card">
+                    <h3>🎯 Niveaux de Log</h3>
+                    <ul>
+                        <li><strong>DEBUG:</strong> Développement uniquement</li>
+                        <li><strong>INFO:</strong> Événements normaux</li>
+                        <li><strong>WARNING:</strong> Situations anormales</li>
+                        <li><strong>ERROR:</strong> Erreurs nécessitant attention</li>
+                        <li><strong>CRITICAL:</strong> Problèmes graves</li>
+                    </ul>
+                    <p><strong>Production:</strong> WARNING et plus uniquement</p>
+                </div>
+
+                <div class="practice-card">
+                    <h3>🔒 Sécurité des Logs</h3>
+                    <ul>
+                        <li>Chiffrement en transit (TLS)</li>
+                        <li>Chiffrement au repos</li>
+                        <li>Intégrité des logs (signatures)</li>
+                        <li>Logs centralisés (serveur dédié)</li>
+                        <li>Sauvegarde régulière</li>
+                    </ul>
+                </div>
+
+                <div class="practice-card">
+                    <h3>⚖️ Conformité</h3>
+                    <ul>
+                        <li><strong>RGPD:</strong> Minimisation des données</li>
+                        <li><strong>PCI-DSS:</strong> Protection des données de paiement</li>
+                        <li><strong>HIPAA:</strong> Protection des données de santé</li>
+                        <li>Politique de rétention conforme</li>
+                        <li>Droit à l'oubli</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="doc-section">
+            <h2>💻 Exemples de Code Sécurisé</h2>
+            
+            <div class="card">
+                <h3>Configuration Sécurisée (Python/Flask)</h3>
+                <div class="code-example">
+                    <pre>
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+
+# Configuration sécurisée
+LOG_DIR = '/var/log/myapp'  # Hors du webroot
+LOG_FILE = os.path.join(LOG_DIR, 'app.log')
+
+# Créer le répertoire avec permissions restrictives
+os.makedirs(LOG_DIR, mode=0o700, exist_ok=True)
+
+# Configuration du logger
+handler = RotatingFileHandler(
+    LOG_FILE,
+    maxBytes=10485760,  # 10MB
+    backupCount=10
+)
+handler.setFormatter(logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+))
+
+logger = logging.getLogger(__name__)
+logger.addHandler(handler)
+logger.setLevel(logging.WARNING)  # WARNING+ en production
+
+# Fonction de masquage
+def mask_data(data, visible=4):
+    if not data or len(data) <= visible:
+        return '*' * len(data) if data else ''
+    return '*' * (len(data) - visible) + data[-visible:]
+
+# Utilisation sécurisée
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    
+    # ✅ Bon: Ne pas logger le mot de passe
+    logger.info(f"Login attempt for user: {username}")
+    
+    if authenticate(username, password):
+        logger.info(f"Successful login: {username}")
+        return jsonify({'success': True})
+    else:
+        logger.warning(f"Failed login attempt: {username}")
+        return jsonify({'success': False}), 401
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Protection des Endpoints de Logs</h3>
+                <div class="code-example">
+                    <pre>
+from functools import wraps
+from flask import abort
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Vérifier l'authentification et les permissions
+        if not is_authenticated() or not is_admin():
+            logger.warning(f"Unauthorized log access attempt from {request.remote_addr}")
+            abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/admin/logs')
+@admin_required
+def view_logs():
+    # Seulement accessible aux admins authentifiés
+    return render_template('logs.html')
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="resources" class="doc-section">
+            <h2>📚 Ressources Supplémentaires</h2>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h3>🔗 OWASP</h3>
+                    <ul>
+                        <li><a href="https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/" target="_blank">A09:2021 – Security Logging and Monitoring Failures</a></li>
+                        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html" target="_blank">OWASP Logging Cheat Sheet</a></li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h3>📖 Documentation</h3>
+                    <ul>
+                        <li><a href="https://www.python.org/dev/peps/pep-0282/" target="_blank">Python Logging</a></li>
+                        <li><a href="https://docs.python.org/3/library/logging.html" target="_blank">Python Logging Module</a></li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h3>🛠️ Outils</h3>
+                    <ul>
+                        <li>ELK Stack (Elasticsearch, Logstash, Kibana)</li>
+                        <li>Splunk</li>
+                        <li>Graylog</li>
+                        <li>Datadog</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h3>⚖️ Réglementations</h3>
+                    <ul>
+                        <li><a href="https://gdpr.eu/" target="_blank">RGPD</a></li>
+                        <li><a href="https://www.pcisecuritystandards.org/" target="_blank">PCI-DSS</a></li>
+                        <li><a href="https://www.hhs.gov/hipaa/" target="_blank">HIPAA</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="cta-section">
+            <h3>🧪 Testez les Vulnérabilités</h3>
+            <p>Maintenant que vous comprenez les risques, explorez l'application pour voir ces vulnérabilités en action:</p>
+            <div class="button-group">
+                <a href="/login" class="btn btn-primary">Tester la Connexion</a>
+                <a href="/logs" class="btn btn-danger">Voir les Logs Vulnérables</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>⚠️ Application pédagogique - A09:2021 Security Logging and Monitoring Failures ⚠️</p>
+    </footer>
+</body>
+</html>

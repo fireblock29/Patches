@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs - Vulnerable Logging App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>🔓 Vulnerable Logging App</h1>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/login">Connexion</a></li>
+                <li><a href="/logs" class="active danger">📋 Voir les Logs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="logs-controls">
+            <div class="control-group">
+                <label for="logType">Type de logs:</label>
+                <select id="logType">
+                    <option value="app">Logs Application (app.log)</option>
+                    <option value="sensitive">Logs Sensibles (sensitive.log) 🔥</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="lineCount">Nombre de lignes:</label>
+                <select id="lineCount">
+                    <option value="50">50 dernières lignes</option>
+                    <option value="100" selected>100 dernières lignes</option>
+                    <option value="500">500 dernières lignes</option>
+                    <option value="1000">1000 dernières lignes</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <button id="refreshLogs" class="btn btn-primary">🔄 Rafraîchir</button>
+                <button id="downloadLogs" class="btn btn-secondary">⬇️ Télécharger</button>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchQuery" placeholder="🔍 Rechercher dans les logs (ex: password, admin, transfer...)">
+            <button id="searchBtn" class="btn btn-primary">Rechercher</button>
+            <button id="clearSearch" class="btn btn-secondary">Effacer</button>
+        </div>
+
+        <div id="searchResults" class="search-results"></div>
+
+        <div class="logs-container">
+            <div class="logs-header">
+                <h3>📋 Contenu des Logs</h3>
+                <span id="logStats" class="log-stats"></span>
+            </div>
+            <pre id="logsContent" class="logs-content">Chargement des logs...</pre>
+        </div>
+
+        <div class="quick-searches">
+            <h3>🔍 Recherches Rapides (Exemples de Données Sensibles)</h3>
+            <p>Cliquez sur ces boutons pour rechercher des informations sensibles dans les logs:</p>
+            <div class="button-group">
+                <button class="btn btn-danger quick-search" data-query="password">🔑 Mots de passe</button>
+                <button class="btn btn-danger quick-search" data-query="CREDENTIALS">👤 Identifiants</button>
+                <button class="btn btn-danger quick-search" data-query="Email">📧 Emails</button>
+                <button class="btn btn-danger quick-search" data-query="admin">👨‍💼 Admin</button>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h3>📊 Statistiques de l'Application</h3>
+            <div id="appStats" class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalActions">-</div>
+                    <div class="stat-label">Actions Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="usersCount">-</div>
+                    <div class="stat-label">Utilisateurs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="appLogSize">-</div>
+                    <div class="stat-label">Taille Logs App</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="sensitiveLogSize">-</div>
+                    <div class="stat-label">Taille Logs Sensibles</div>
+                </div>
+            </div>
+            <div id="recentActions" class="recent-actions"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>⚠️ Cette page démontre une vulnérabilité critique - Ne jamais implémenter cela en production ⚠️</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/logs.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerable Logging App - Démo Pédagogique</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>🔓 Vulnerable Logging App</h1>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/login">Connexion</a></li>
+                <li><a href="/logs" class="danger">📋 Voir les Logs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h2>⚠️ Application Vulnérable - Démonstration Pédagogique</h2>
+            <p class="warning-box">
+                <strong>ATTENTION:</strong> Cette application est <strong>délibérément vulnérable</strong> 
+                et sert à des fins pédagogiques pour démontrer la vulnérabilité 
+                <strong>A09:2021 – Security Logging and Monitoring Failures</strong> de l'OWASP Top 10.
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>🧪 Fonctionnalités de Test</h3>
+                <p>Testez les différentes fonctionnalités pour voir comment elles génèrent des logs vulnérables:</p>
+                <div class="button-group">
+                    <a href="/login" class="btn btn-primary">Se Connecter</a>
+                    <a href="/logs" class="btn btn-danger">Voir les Logs</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-accounts">
+            <h3>🔑 Comptes de Démonstration</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Mot de passe</th>
+                        <th>Rôle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>admin</td>
+                        <td>admin123</td>
+                        <td>Administrateur</td>
+                    </tr>
+                    <tr>
+                        <td>user1</td>
+                        <td>password123</td>
+                        <td>Utilisateur</td>
+                    </tr>
+                    <tr>
+                        <td>john.doe</td>
+                        <td>MyS3cr3tP@ss</td>
+                        <td>Utilisateur</td>
+                    </tr>
+                    <tr>
+                        <td>alice</td>
+                        <td>alice2024!</td>
+                        <td>Utilisateur</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cta-section">
+            <h3>🚀 Commencez l'Exploration</h3>
+            <p>Cliquez sur le bouton ci-dessous pour accéder aux logs et découvrir les vulnérabilités:</p>
+            <a href="/logs" class="btn btn-danger btn-large">📋 Accéder aux Logs Vulnérables</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>⚠️ Application à des fins pédagogiques uniquement - Ne jamais utiliser en production ⚠️</p>
+        <p>Démonstration de: <strong>A09:2021 – Security Logging and Monitoring Failures (OWASP Top 10)</strong></p>
+    </footer>
+</body>
+</html>
